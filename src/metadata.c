@@ -58,23 +58,19 @@ getExtension (const char *filename)
   return str;
 }
 
-static struct mime_type_t *
-getMimeType (const char *extension)
-{
+static struct mime_type_t * getMimeType (const char *extension) {
   extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
-
-  if (!extension)
+  if (!extension) {
     return NULL;
-
+  }
   list = MIME_Type_List;
-  while (list->extension)
-  {
-    if (!strcasecmp (list->extension, extension))
+  while (list->extension) {
+    if (!strcasecmp (list->extension, extension)) {
       return list;
+    }
     list++;
   }
-
   return NULL;
 }
 
@@ -163,17 +159,21 @@ convert_xml (const char *title)
 static struct mime_type_t Container_MIME_Type =
   { NULL, "object.container.storageFolder", NULL};
 
-static struct upnp_entry_t *
-upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
-                struct upnp_entry_t *parent, off_t size, int dir)
+static struct upnp_entry_t * upnp_entry_new(struct ushare_t *ut,
+                                            const char *name,
+                                            const char *fullpath,
+                                            struct upnp_entry_t *parent,
+                                            off_t size,
+                                            int dir)
 {
   struct upnp_entry_t *entry = NULL;
   char *title = NULL, *x = NULL;
   char url_tmp[MAX_URL_SIZE] = { '\0' };
   char *title_or_name = NULL;
 
-  if (!name)
+  if (!name) {
     return NULL;
+  }
 
   entry = (struct upnp_entry_t *) malloc (sizeof (struct upnp_entry_t));
 
@@ -192,36 +192,32 @@ upnp_entry_new (struct ushare_t *ut, const char *name, const char *fullpath,
   }
 #endif /* HAVE_DLNA */
  
-  if (ut->xbox360)
-  {
-    if (ut->root_entry)
+  if (ut->xbox360) {
+    if (ut->root_entry) {
       entry->id = ut->starting_id + ut->nr_entries++;
-    else
+    } else {
       entry->id = 0; /* Creating the root node so don't use the usual IDs */
-  }
-  else
+    }
+  } else {
     entry->id = ut->starting_id + ut->nr_entries++;
-  
+  }
   entry->fullpath = fullpath ? strdup (fullpath) : NULL;
   entry->parent = parent;
-  entry->child_count =  dir ? 0 : -1;
+  entry->child_count = dir ? 0 : -1;
   entry->title = NULL;
 
   entry->childs = (struct upnp_entry_t **)
     malloc (sizeof (struct upnp_entry_t *));
   *(entry->childs) = NULL;
 
-  if (!dir) /* item */
-    {
+  if (!dir) /* item */ {
 #ifdef HAVE_DLNA
-      if (ut->dlna_enabled)
+      if (ut->dlna_enabled) {
         entry->mime_type = NULL;
-      else
-      {
+      } else {
 #endif /* HAVE_DLNA */
-      struct mime_type_t *mime = getMimeType (getExtension (name));
-      if (!mime)
-      {
+      struct mime_type_t *mime = getMimeType(getExtension (name));
+      if (!mime) {
         --ut->nr_entries; 
         upnp_entry_free (ut, entry);
         log_error ("Invalid Mime type for %s, entry ignored", name);
