@@ -29,8 +29,7 @@
 
 extern struct ushare_t *ut;
 
-void
-print_log (log_level level, const char *format, ...)
+void print_log (log_level level, const char *format, ...)
 {
   va_list va;
   bool is_daemon = ut ? ut->daemon : false;
@@ -57,8 +56,6 @@ print_log (log_level level, const char *format, ...)
   va_end (va);
 }
 
-inline void
-start_log (void)
-{
+void start_log (void) {
   openlog (PACKAGE_NAME, LOG_PID, LOG_DAEMON);
 }

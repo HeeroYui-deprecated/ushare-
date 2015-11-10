@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <getopt.h>
 
+
 #if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
 #include <sys/socket.h>
 #include <sys/sysctl.h>
@@ -188,7 +189,7 @@ handle_action_request (struct Upnp_Action_Request *request)
   if (strcmp (request->DevUDN + 5, ut->udn))
     return;
 
-  ip = request->CtrlPtIPAddr.s_addr;
+  ip = ((struct in_addr*)&request->CtrlPtIPAddr)->s_addr;
   ip = ntohl (ip);
   sprintf (val, "%d.%d.%d.%d",
            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);

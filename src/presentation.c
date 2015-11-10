@@ -23,7 +23,8 @@
 #if HAVE_LANGINFO_CODESET
 # include <langinfo.h>
 #endif
-
+#include <string.h>
+#include <stdio.h>
 #include "config.h"
 #include "metadata.h"
 #include "content.h"
