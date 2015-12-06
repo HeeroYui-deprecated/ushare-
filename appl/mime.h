@@ -29,4 +29,6 @@ struct mime_type_t {
 
 char *mime_get_protocol (struct mime_type_t *mime);
 
+extern struct mime_type_t MIME_Type_List[];
+
 #endif /* _MIME_H */

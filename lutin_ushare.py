@@ -32,23 +32,23 @@ def create(target, module_name):
 	my_module = module.Module(__file__, module_name, get_type())
 	my_module.add_extra_compile_flags()
 	my_module.add_src_file([
-		'src/http.c',
-		'src/services.c',
-		'src/ushare.c',
-		'src/content.c',
-		'src/trace.c',
-		'src/cms.c',
-		'src/redblack.c',
-		'src/util_iconv.c',
-		'src/osdep.c',
-		'src/mime.c',
-		'src/cfgparser.c',
-		'src/metadata.c',
-		'src/msr.c',
-		'src/cds.c',
-		'src/presentation.c',
-		'src/buffer.c',
-		'src/ctrl_telnet.c'
+		'appl/http.cpp',
+		'appl/services.cpp',
+		'appl/ushare.cpp',
+		'appl/content.cpp',
+		'appl/trace.cpp',
+		'appl/cms.cpp',
+		'appl/redblack.cpp',
+		'appl/util_iconv.cpp',
+		'appl/osdep.cpp',
+		'appl/mime.cpp',
+		'appl/cfgparser.cpp',
+		'appl/metadata.cpp',
+		'appl/msr.cpp',
+		'appl/cds.cpp',
+		'appl/presentation.cpp',
+		'appl/buffer.cpp',
+		'appl/ctrl_telnet.cpp'
 		])
 	my_module.add_path(tools.get_current_path(__file__))
 	my_module.compile_flags('c', [

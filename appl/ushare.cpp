@@ -27,6 +27,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <getopt.h>
+#include <string.h>
+#include <stdio.h>
 
 
 #if (defined(BSD) || defined(__FreeBSD__) || defined(__APPLE__))
@@ -783,7 +785,7 @@ main (int argc, char **argv)
   {
     char *name;
 
-    name = malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->model_name) + 4);
+    name = (char*)malloc (strlen (XBOX_MODEL_NAME) + strlen (ut->model_name) + 4);
     sprintf (name, "%s (%s)", XBOX_MODEL_NAME, ut->model_name);
     free (ut->model_name);
     ut->model_name = strdup (name);

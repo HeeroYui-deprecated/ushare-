@@ -26,6 +26,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -89,7 +91,7 @@ is_valid_extension (const char *extension)
 static int
 get_list_length (void *list)
 {
-  void **l = list;
+  void **l = (void **)list;
   int n = 0;
 
   while (*(l++))

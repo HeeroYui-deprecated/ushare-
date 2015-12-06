@@ -63,7 +63,7 @@ buffer_append (struct buffer_t *buffer, const char *str)
   if (len >= buffer->capacity)
   {
     buffer->capacity = MAX (len + 1, 2 * buffer->capacity);
-    buffer->buf = realloc (buffer->buf, buffer->capacity);
+    buffer->buf = (char*)realloc (buffer->buf, buffer->capacity);
   }
 
   strcat (buffer->buf, str);

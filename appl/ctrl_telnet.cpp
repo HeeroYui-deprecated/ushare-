@@ -291,7 +291,7 @@ ctrl_telnet_thread (void *a __attribute__ ((unused)))
       socklen_t sl_addr;
 
       /* Create client object */
-      client = malloc (sizeof (ctrl_telnet_client));
+      client = (ctrl_telnet_client *)malloc (sizeof (ctrl_telnet_client));
 
       if (!client)
       {
@@ -628,7 +628,7 @@ ctrl_telnet_register (const char *funcname,
 {
   telnet_function_list *function;
 
-  function = malloc (sizeof (telnet_function_list));
+  function = (telnet_function_list *)malloc (sizeof (telnet_function_list));
   function->name = strdup (funcname); /* Mayby use strndup...? */
   function->description = description ? strdup (description) : NULL;
   function->function = funcptr;
@@ -689,7 +689,7 @@ ctrl_telnet_tokenize (char *raw, int *argc, char ***argv)
   }
 
   /* Create argv */
-  *argv = malloc (sizeof (char **) * ((*argc) + 1));
+  *argv = (char **)malloc (sizeof (char **) * ((*argc) + 1));
 
   /* (2/3) Parse throu one more time, this time filling argv (Pass 2 / 3) */
   i = 0;

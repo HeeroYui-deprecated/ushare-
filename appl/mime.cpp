@@ -21,6 +21,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "mime.h"
 #include "ushare.h"
@@ -31,7 +33,7 @@
 #define UPNP_PLAYLIST "object.item.playlistItem"
 #define UPNP_TEXT "object.item.textItem"
 
-const struct mime_type_t MIME_Type_List[] = {
+struct mime_type_t MIME_Type_List[] = {
   /* Video files */
   { "asf",   UPNP_VIDEO, "http-get:*:video/x-ms-asf:"},
   { "avc",   UPNP_VIDEO, "http-get:*:video/avi:"},

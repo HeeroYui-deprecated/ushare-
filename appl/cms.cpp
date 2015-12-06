@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "ushare.h"
 #include "services.h"
@@ -84,7 +86,6 @@
 static bool
 cms_get_protocol_info (struct action_event_t *event)
 {
-  extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list;
   char *respText = NULL, *respPtr;
   size_t respLen = 0, len;
@@ -142,7 +143,6 @@ cms_get_current_connection_ids (struct action_event_t *event)
 static bool
 cms_get_current_connection_info (struct action_event_t *event)
 {
-  extern struct mime_type_t MIME_Type_List[];
   struct mime_type_t *list = MIME_Type_List;
 
   if (!event)

@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "ushare.h"
 #include "services.h"

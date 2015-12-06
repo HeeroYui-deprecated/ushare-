@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
+#include <stdio.h>
 
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
@@ -187,10 +189,10 @@ get_file_memory (const char *fullpath, const char *description,
 {
   struct web_file_t *file;
 
-  file = malloc (sizeof (struct web_file_t));
+  file = (struct web_file_t *)malloc (sizeof (struct web_file_t));
   file->fullpath = strdup (fullpath);
   file->pos = 0;
-  file->type = FILE_MEMORY;
+  file->type = web_file_t::FILE_MEMORY;
   file->detail.memory.contents = strdup (description);
   file->detail.memory.len = length;
 
@@ -241,10 +243,10 @@ http_open (const char *filename, enum UpnpOpenFileMode mode)
   if (fd < 0)
     return NULL;
 
-  file = malloc (sizeof (struct web_file_t));
+  file = (struct web_file_t *)malloc (sizeof (struct web_file_t));
   file->fullpath = strdup (entry->fullpath);
   file->pos = 0;
-  file->type = FILE_LOCAL;
+  file->type = web_file_t::FILE_LOCAL;
   file->detail.local.entry = entry;
   file->detail.local.fd = fd;
 
@@ -264,11 +266,11 @@ http_read (UpnpWebFileHandle fh, char *buf, size_t buflen)
 
   switch (file->type)
   {
-  case FILE_LOCAL:
+  case web_file_t::FILE_LOCAL:
     log_verbose ("Read local file.\n");
     len = read (file->detail.local.fd, buf, buflen);
     break;
-  case FILE_MEMORY:
+  case web_file_t::FILE_MEMORY:
     log_verbose ("Read file from memory.\n");
     len = (size_t) MIN (buflen, file->detail.memory.len - file->pos);
     memcpy (buf, file->detail.memory.contents + file->pos, (size_t) len);
@@ -323,7 +325,7 @@ http_seek (UpnpWebFileHandle fh, off_t offset, int origin)
     log_verbose ("Attempting to seek by %lld from end (was at %lld) in %s\n",
                 offset, file->pos, file->fullpath);
 
-    if (file->type == FILE_LOCAL)
+    if (file->type == web_file_t::FILE_LOCAL)
     {
       struct stat sb;
       if (stat (file->fullpath, &sb) < 0)
@@ -333,15 +335,15 @@ http_seek (UpnpWebFileHandle fh, off_t offset, int origin)
         return -1;
       }
       newpos = sb.st_size + offset;
-    }
-    else if (file->type == FILE_MEMORY)
+    } else if (file->type == web_file_t::FILE_MEMORY) {
       newpos = file->detail.memory.len + offset;
+    }
     break;
   }
 
   switch (file->type)
   {
-  case FILE_LOCAL:
+  case web_file_t::FILE_LOCAL:
     /* Just make sure we cannot seek before start of file. */
     if (newpos < 0)
     {
@@ -357,7 +359,7 @@ http_seek (UpnpWebFileHandle fh, off_t offset, int origin)
       return -1;
     }
     break;
-  case FILE_MEMORY:
+  case web_file_t::FILE_MEMORY:
     if (newpos < 0 || newpos > file->detail.memory.len)
     {
       log_verbose ("%s: cannot seek: %s\n", file->fullpath, strerror (EINVAL));
@@ -383,10 +385,10 @@ http_close (UpnpWebFileHandle fh)
 
   switch (file->type)
   {
-  case FILE_LOCAL:
+  case web_file_t::FILE_LOCAL:
     close (file->detail.local.fd);
     break;
-  case FILE_MEMORY:
+  case web_file_t::FILE_MEMORY:
     /* no close operation */
     if (file->detail.memory.contents)
       free (file->detail.memory.contents);

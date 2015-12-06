@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "ushare.h"
 #include "services.h"
@@ -271,7 +273,7 @@ didl_add_value (struct buffer_t *out, char *param, off_t value)
 
 static void
 didl_add_item (struct buffer_t *out, int item_id,
-               int parent_id, char *restricted, char *class, char *title,
+               int parent_id, char *restricted, char *classPointer, char *title,
                char *protocol_info, off_t size, char *url, char *filter)
 {
   buffer_appendf (out, "<%s", DIDL_ITEM);
@@ -280,7 +282,7 @@ didl_add_item (struct buffer_t *out, int item_id,
   didl_add_param (out, DIDL_ITEM_RESTRICTED, restricted);
   buffer_append (out, ">");
 
-  didl_add_tag (out, DIDL_ITEM_CLASS, class);
+  didl_add_tag (out, DIDL_ITEM_CLASS, classPointer);
   didl_add_tag (out, DIDL_ITEM_TITLE, title);
 
   if (filter_has_val (filter, DIDL_RES))
@@ -305,7 +307,7 @@ didl_add_item (struct buffer_t *out, int item_id,
 static void
 didl_add_container (struct buffer_t *out, int id, int parent_id,
                     int child_count, char *restricted, char *searchable,
-                    char *title, char *class)
+                    char *title, char *classPointer)
 {
   buffer_appendf (out, "<%s", DIDL_CONTAINER);
 
@@ -317,7 +319,7 @@ didl_add_container (struct buffer_t *out, int id, int parent_id,
   didl_add_param (out, DIDL_CONTAINER_SEARCH, searchable);
   buffer_append (out, ">");
 
-  didl_add_tag (out, DIDL_CONTAINER_CLASS, class);
+  didl_add_tag (out, DIDL_CONTAINER_CLASS, classPointer);
   didl_add_tag (out, DIDL_CONTAINER_TITLE, title);
 
   buffer_appendf (out, "</%s>", DIDL_CONTAINER);
