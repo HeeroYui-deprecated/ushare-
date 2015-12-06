@@ -310,7 +310,7 @@ parse_config_file (struct ushare_t *ut)
   return 0;
 }
 
-inline static void
+ static void
 display_usage (void)
 {
   display_headers ();

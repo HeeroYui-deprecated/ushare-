@@ -719,22 +719,20 @@ reload_config (int s __attribute__ ((unused)))
   }
 }
 
-inline void
-display_headers (void)
-{
+void display_headers (void) {
   printf (_("%s (version %s), a lightweight UPnP A/V and DLNA Media Server.\n"),
           PACKAGE_NAME, VERSION);
   printf (_("Benjamin Zores (C) 2005-2007, for GeeXboX Team.\n"));
   printf (_("See http://ushare.geexbox.org/ for updates.\n"));
 }
 
-inline static void
-setup_i18n(void)
-{
+static void setup_i18n(void) {
 #ifdef CONFIG_NLS
+/*
 #ifdef HAVE_SETLOCALE
   setlocale (LC_ALL, "");
 #endif
+*/
 #if (!defined(BSD) && !defined(__FreeBSD__))
   bindtextdomain (PACKAGE, LOCALEDIR);
 #endif
