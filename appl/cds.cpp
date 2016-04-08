@@ -176,31 +176,27 @@
 /* Represent the Search 'AND' connector keyword */
 #define SEARCH_AND ") and ("
 
-static bool
-filter_has_val (const char *filter, const char *val)
-{
+static bool filter_has_val(const char *filter, const char *val) {
   char *x = NULL, *token = NULL;
   char *m_buffer = NULL, *buffer;
   int len = strlen (val);
   bool ret = false;
 
-  if (!strcmp (filter, "*"))
+  if (!strcmp (filter, "*")) {
     return true;
+  }
 
   x = strdup (filter);
-  if (x)
-  {
+  if (x) {
     m_buffer = (char*) malloc (strlen (x));
-    if (m_buffer)
-    {
+    if (m_buffer) {
       buffer = m_buffer;
       token = strtok_r (x, ",", &buffer);
-      while (token)
-      {
-        if (*val == '@')
+      while (token) {
+        if (*val == '@') {
           token = strchr (token, '@');
-        if (token && !strncmp (token, val, len))
-        {
+        }
+        if (token && !strncmp (token, val, len)) {
           ret = true;
           break;
         }
@@ -214,74 +210,54 @@ filter_has_val (const char *filter, const char *val)
 }
 
 /* UPnP ContentDirectory Service actions */
-static bool
-cds_get_search_capabilities (struct action_event_t *event)
-{
-  upnp_add_response (event, SERVICE_CDS_ARG_SEARCH_CAPS, "");
-
+static bool cds_get_search_capabilities(struct action_event_t *event) {
+  upnp_add_response(event, SERVICE_CDS_ARG_SEARCH_CAPS, "");
   return event->status;
 }
 
-static bool
-cds_get_sort_capabilities (struct action_event_t *event)
-{
-  upnp_add_response (event, SERVICE_CDS_ARG_SORT_CAPS, "");
-
+static bool cds_get_sort_capabilities(struct action_event_t *event) {
+  upnp_add_response(event, SERVICE_CDS_ARG_SORT_CAPS, "");
   return event->status;
 }
 
-static bool
-cds_get_system_update_id (struct action_event_t *event)
-{
-  upnp_add_response (event, SERVICE_CDS_ARG_UPDATE_ID,
+static bool cds_get_system_update_id(struct action_event_t *event) {
+  upnp_add_response(event, SERVICE_CDS_ARG_UPDATE_ID,
                      SERVICE_CDS_ROOT_OBJECT_ID);
-
   return event->status;
 }
 
-static void
-didl_add_header (struct buffer_t *out)
-{
-  buffer_appendf (out, "<%s %s>", DIDL_LITE, DIDL_NAMESPACE);
+static void didl_add_header (struct buffer_t *out) {
+  buffer_appendf(out, "<%s %s>", DIDL_LITE, DIDL_NAMESPACE);
 }
 
-static void
-didl_add_footer (struct buffer_t *out)
-{
-  buffer_appendf (out, "</%s>", DIDL_LITE);
+static void didl_add_footer (struct buffer_t *out) {
+  buffer_appendf(out, "</%s>", DIDL_LITE);
 }
 
-static void
-didl_add_tag (struct buffer_t *out, char *tag, char *value)
-{
-  if (value)
-    buffer_appendf (out, "<%s>%s</%s>", tag, value, tag);
+static void didl_add_tag(struct buffer_t *out, char *tag, char *value) {
+  if (value) {
+    buffer_appendf(out, "<%s>%s</%s>", tag, value, tag);
+  }
 }
 
-static void
-didl_add_param (struct buffer_t *out, char *param, char *value)
-{
-  if (value)
+static void didl_add_param(struct buffer_t *out, char *param, char *value) {
+  if (value) {
     buffer_appendf (out, " %s=\"%s\"", param, value);
+  }
 }
 
-static void
-didl_add_value (struct buffer_t *out, char *param, off_t value)
-{
+static void didl_add_value(struct buffer_t *out, char *param, off_t value) {
   buffer_appendf (out, " %s=\"%lld\"", param, value);
 }
 
-static void
-didl_add_item (struct buffer_t *out, int item_id,
+static void didl_add_item (struct buffer_t *out, int item_id,
                int parent_id, char *restricted, char *classPointer, char *title,
-               char *protocol_info, off_t size, char *url, char *filter)
-{
+               char *protocol_info, off_t size, char *url, char *filter) {
   buffer_appendf (out, "<%s", DIDL_ITEM);
   didl_add_value (out, DIDL_ITEM_ID, item_id);
   didl_add_value (out, DIDL_ITEM_PARENT_ID, parent_id);
   didl_add_param (out, DIDL_ITEM_RESTRICTED, restricted);
   buffer_append (out, ">");
-
   didl_add_tag (out, DIDL_ITEM_CLASS, classPointer);
   didl_add_tag (out, DIDL_ITEM_TITLE, title);
 
